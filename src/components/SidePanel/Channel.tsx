@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import { Button, Form, Icon, Input, Menu, Modal } from 'semantic-ui-react';
-import { IChannel } from '../../models/channels';
+import React, { useContext, useEffect } from 'react';
+import { Icon, Menu } from 'semantic-ui-react';
+import { observer } from 'mobx-react-lite';
+
 import ChannelItem from './ChannelItem';
+import ChannelForm from './ChannelForm';
+import { IChannel } from '../../models/channels';
+import ChannelStore from '../../stores/ChannelStore';
 
-interface IState{
-    channels: IChannel[],
-    modal: boolean
-}
+const Channel = () => {
 
-class Channel extends Component<{}, IState> {
+    const channelStore = useContext(ChannelStore);
+    const { channels } = channelStore;
+    
+    useEffect(() => {
+        channelStore.loadChannels();
+    }, [channelStore]);
 
-    state= { channels: [], modal: false }
-
-    openModal = () => this.setState({ modal: true });
-    closeModal = () => this.setState({ modal: false });
-
-    displayChannels = ( channels: IChannel[] ) => {
+    const displayChannels = ( channels: IChannel[] ) => {
         return (
             channels.length > 0 &&
             channels.map((channel) => (
@@ -25,55 +25,28 @@ class Channel extends Component<{}, IState> {
         );
     };
 
-    componentDidMount(){
-        axios.get<IChannel[]>('http://localhost:5000/api/channels').then((response) => {
-            this.setState({
-                channels: response.data
-            });
-        })
-    }
+    return (
+        <>
+            <Menu.Menu style={{ paddingBottom: '2em' }} >
+                <Menu.Item>
+                    <span> <Icon name="exchange" /> CHANNELS </span>
 
-    render(){
+                        ({ channels.length }) 
+                        <Icon  
+                            name="add" 
+                            onClick={ () => channelStore.showModal(true) } 
+                            className="addIcon"
+                        />
+                </Menu.Item>
+                {displayChannels(channels)}
+            </Menu.Menu>
 
-        const { channels, modal } = this.state;
-        console.log(channels);
-        return (
-            <>
-                <Menu.Menu style={{ paddingBottom: '2em' }} >
-                    <Menu.Item>
-                        <span>
-                            <Icon name="exchange" />
-                            CHANNELS
-                        </span>
-                         ({ channels.length }) <Icon name="add" onClick={this.openModal} className="addIcon"/>
-                    </Menu.Item>
-                    {this.displayChannels(channels)}
-                </Menu.Menu>
-                
-                <Modal basic open={modal}>
-                    <Modal.Header>Add Channel</Modal.Header>
-                    <Modal.Content>
-                        <Form>
-                            <Form.Field>
-                                <Input fluid label="Channel Name" name="channelName" />
-                            </Form.Field>
-                            <Form.Field>
-                                <Input fluid label="Description" name="channelDescription" />
-                            </Form.Field>
-                        </Form>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button basic color='green' inverted onClick={this.openModal}>
-                        <Icon name='checkmark' /> Add
-                        </Button>
-                        <Button color='red' inverted onClick={this.closeModal}>
-                        <Icon name='remove' /> Cancel
-                        </Button>
-                    </Modal.Actions>                    
-                </Modal>
-            </>
-        );
-    }
+            <ChannelForm />
+
+        </>
+    );
+    
 }
 
-export default Channel;
+//debemos convertir nuestro componente en observador
+export default observer( Channel );

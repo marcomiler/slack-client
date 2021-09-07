@@ -8,14 +8,14 @@ interface IProps{
 
 const ChannelItem: React.FC<IProps> = ({ channel }) => {
     return (
-            <Menu.Item
-                key={channel.id}
-                name={channel.name}
-                style={{ opacity: 0.7 }}
-                onClick={() => console.log(channel.name)}
-            >
-                #{channel.name}
-            </Menu.Item>
+        <Menu.Item
+            key={channel.id}
+            name={channel.name}
+            style={{ opacity: 0.7 }}
+            onClick={() => console.log(channel.name)}
+        >
+            # {channel.name}
+        </Menu.Item>
     );
 }
 
