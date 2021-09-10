@@ -1,7 +1,24 @@
 import axios, { AxiosResponse } from 'axios';
 import { IChannel } from '../models/channels';
+import { history } from '../index';
+
+import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
+
+axios.interceptors.response.use( undefined, (error) => {
+
+    if(error.message === 'Network Error' && !error.response)
+    {
+        toast.error('Network Error -Make sure API is running');
+        return;
+    }
+
+    const { status } = error.response;
+
+    if(status === 404) history.push( "notfound" );
+    if(status === 500) toast.error('Server error - Check the terminal');
+});
 
 const responseBody = (response: AxiosResponse) => response.data;
 
