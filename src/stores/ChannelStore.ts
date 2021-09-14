@@ -1,16 +1,17 @@
-import { action, makeObservable, observable, configure, runInAction } from 'mobx';
-import { createContext } from 'react';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { axiosChannel } from '../api/agent';
 import { IChannel } from '../models/channels';
+import { RootStore } from './rootStore';
 
-configure({enforceActions: 'always'})//habilitamos strict mode
-class ChannelStore {
+export default class ChannelStore {
 
     @observable channels: IChannel[] = [];
     @observable isModalvisible: boolean = false;
+    rootStore: RootStore;
 
-    constructor() {
+    constructor( rootStore: RootStore ) {
         makeObservable(this);
+        this.rootStore = rootStore;
     }
 
     @action loadChannels = async () => {
@@ -41,5 +42,3 @@ class ChannelStore {
     }
 
 }
-
-export default createContext( new ChannelStore() );

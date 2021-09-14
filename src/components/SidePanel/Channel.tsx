@@ -5,16 +5,19 @@ import { observer } from 'mobx-react-lite';
 import ChannelItem from './ChannelItem';
 import ChannelForm from './ChannelForm';
 import { IChannel } from '../../models/channels';
-import ChannelStore from '../../stores/ChannelStore';
+import { RootStoreContext } from '../../stores/rootStore';
 
 const Channel = () => {
 
-    const channelStore = useContext(ChannelStore);
-    const { channels } = channelStore;
+    const { 
+        channels,
+        loadChannels,
+        showModal 
+    } = useContext( RootStoreContext ).channelStore;
     
     useEffect(() => {
-        channelStore.loadChannels();
-    }, [channelStore]);
+        loadChannels();
+    }, [loadChannels]);
 
     const displayChannels = ( channels: IChannel[] ) => {
         return (
@@ -34,11 +37,11 @@ const Channel = () => {
                         ({ channels.length }) 
                         <Icon  
                             name="add" 
-                            onClick={ () => channelStore.showModal(true) } 
+                            onClick={ () => showModal(true) } 
                             className="addIcon"
                         />
                 </Menu.Item>
-                {displayChannels(channels)}
+                { displayChannels( channels ) }
             </Menu.Menu>
 
             <ChannelForm />
