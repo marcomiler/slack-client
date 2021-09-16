@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 
 import { IChannel } from '../models/channels';
 import { IUSer, IUserFormValues } from '../models/users';
+import { IMessage, IMessageFormValues } from '../models/messages';
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
@@ -11,7 +12,7 @@ axios.interceptors.response.use( undefined, (error) => {
 
     if(error.message === 'Network Error' && !error.response)
     {
-        toast.error('Network Error -Make sure API is running');
+        toast.error('Network Error - Make sure API is running');
         return;
     }
 
@@ -51,4 +52,8 @@ export const axiosUser = {
 export const axiosChannel = {
     list: () : Promise<IChannel[]> => request.get('/channels'),
     create: (channel: IChannel) => request.post('/channels', channel)
+}
+
+export const axiosMessage = {
+    send: (message: IMessageFormValues) : Promise<IMessage> => request.post('/message', message)
 }

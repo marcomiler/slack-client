@@ -2,6 +2,7 @@ export interface IUSer {
     userName:   string;
     email:      string;
     token:      string;
+    avatar?:     string;
 }
 
 export interface IUserFormValues{

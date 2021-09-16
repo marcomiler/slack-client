@@ -29,7 +29,7 @@ const Login = () => {
     const handleSubmitForm = async ( values: IUserFormValues ) => {
         // console.log(values);
         //con el catch seteamos el error en la propiedad de final form
-        return login( values ).catch((err) => ( { [FORM_ERROR]: err} ));
+        return login( values ).catch((err) => ( { [FORM_ERROR]: err } ));
     }
 
     return (

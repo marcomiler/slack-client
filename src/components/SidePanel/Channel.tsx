@@ -12,18 +12,29 @@ const Channel = () => {
     const { 
         channels,
         loadChannels,
-        showModal 
+        showModal,
+        setActiveChannel,
+        getCurrentChannel
     } = useContext( RootStoreContext ).channelStore;
     
     useEffect(() => {
         loadChannels();
     }, [loadChannels]);
 
+    const changeChannel = ( channel: IChannel ) => {
+        setActiveChannel( channel );
+        console.log(getCurrentChannel());
+    }
+
     const displayChannels = ( channels: IChannel[] ) => {
         return (
             channels.length > 0 &&
             channels.map((channel) => (
-                <ChannelItem key={channel.id} channel={channel}/>
+                <ChannelItem 
+                    changeChannel = { changeChannel }
+                    key={channel.id}
+                    channel={channel}
+                />
             ))
         );
     };

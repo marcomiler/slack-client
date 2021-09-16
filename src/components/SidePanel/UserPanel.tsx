@@ -21,8 +21,7 @@ const UserPanel = () => {
         },
         {
             key: 'signout',
-            text: ( <span className="addIcon" onClick={ logout }>Sign out</span> ),
-            disabled: true
+            text: ( <span onClick={ logout }>Sign out</span> )
         }
 
     ];

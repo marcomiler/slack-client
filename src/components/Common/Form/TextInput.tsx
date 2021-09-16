@@ -6,7 +6,7 @@ interface IProps extends FieldRenderProps<string, HTMLElement>, FormFieldProps {
 
 }
 
-const TextInput: FC<IProps> = ({ placeholder, type, icon, input, meta: { touched, error } }) => {
+const TextInput: FC<IProps> = ({ placeholder, type, icon, input, meta: { touched, error }, iconLabel }) => {
     return (
         <Form.Input
             fluid
@@ -14,7 +14,13 @@ const TextInput: FC<IProps> = ({ placeholder, type, icon, input, meta: { touched
             iconPosition="left"
             placeholder={ placeholder }
         >
-            <input { ...input } />
+            { iconLabel && (
+                <button className="ui icon button label button__icon">
+                    <i aria-hidden="true" className="add icon" ></i>
+                </button>
+            )}
+
+            <input { ...input } className={ iconLabel ? "input icon" : "" } />
             { touched && error && (
                 <Label basic color="red">
                     {error}

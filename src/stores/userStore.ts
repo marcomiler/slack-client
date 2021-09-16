@@ -41,4 +41,19 @@ export default class UserStore {
         history.push("/login");
     }
 
+    @action getUser = async () => {
+
+        try {
+
+            const user = await axiosUser.currentUser();
+            runInAction(() => {
+                this.user = user;
+            });
+
+        } catch (error) {
+            throw error;
+        }
+
+    }
+
 }
